@@ -9,14 +9,25 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3010;
 
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser: true, useUnifiedTopology: true});
 
-var users=[];
+const userSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+    age: Number,
+    height: Number,
+    weight: Number,
+    favSport: String
+});
+
+const User = mongoose.model('user', userSchema);
+
+
+const users=[];
 
 // localhost:3010/
 app.get('/', home);
-
-// localhost:3003/books?email=vzulof@gmail.com
-// app.get('/profile', goToProfile);
 
 //localhost:3010/newUser
 app.post('/newUser',usersInfo);
@@ -25,32 +36,36 @@ function usersInfo(req,res){
 
     console.log("inside saving function");
     const {name, email, height, weight, age, favSport}= req.body;
-    const newUser= {
+    const newUser= new User({
         name: name,
         email: email,
         age:Number(age),
         height: Number(height), 
         weight: Number(weight),
         favSport:favSport
-    };
+    });
     console.log(newUser)
     try{
    
-    users.push(newUser);
+    users.push(newUser); 
+    newUser.save();
+    res.status(200).send(users);
     console.log(newUser);
     
-    res.status(200).send(users);
+   
     console.log("pass");
 }
     catch (err) {
-        res.status(500).send(`${err}: DATA NOT FOUND FOR REQUIRED LOCATION`);
+        res.status(500).send(`${err}: ERROR IN CHECKING USER DATA`);
         console.log("catch");
     };
     
 }
 
 function home (req, res){
-    res.send('Home in Project 301');
+    
+        console.log(users);
+        res.status(200).send(users);
 }
 
 
