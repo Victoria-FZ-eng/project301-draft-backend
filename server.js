@@ -10,7 +10,7 @@ app.use(express.json());
 const PORT = process.env.PORT || 3010;
 
 
-var users
+var users=[];
 
 // localhost:3010/
 app.get('/', home);
@@ -24,11 +24,7 @@ app.post('/newUser',usersInfo);
 function usersInfo(req,res){
 
     console.log("inside saving function");
-    try{
     const {name, email, height, weight, age, favSport}= req.body;
-    // console.log(`adding user ${name, email, height, weight, favSport, age}`);
-
-    
     const newUser= {
         name: name,
         email: email,
@@ -37,17 +33,20 @@ function usersInfo(req,res){
         weight: Number(weight),
         favSport:favSport
     };
+    console.log(newUser)
+    try{
+   
     users.push(newUser);
     console.log(newUser);
     
     res.status(200).send(users);
+    console.log("pass");
 }
     catch (err) {
-        res.status(500).send(`${err}: MOVIE'S DATA NOT FOUND FOR REQUIRED LOCATION`);
+        res.status(500).send(`${err}: DATA NOT FOUND FOR REQUIRED LOCATION`);
         console.log("catch");
     };
-    console.log("pass");
-
+    
 }
 
 function home (req, res){
