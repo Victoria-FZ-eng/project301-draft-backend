@@ -24,7 +24,7 @@ app.post('/newUser',usersInfo);
 function usersInfo(req,res){
 
     console.log("inside saving function");
-    // try{
+    try{
     const {name, email, height, weight, age, favSport}= req.body;
     // console.log(`adding user ${name, email, height, weight, favSport, age}`);
 
@@ -41,11 +41,11 @@ function usersInfo(req,res){
     console.log(newUser);
     
     res.status(200).send(users);
-// }
-    // catch (err => {
-    //     res.status(500).send(`${err}: MOVIE'S DATA NOT FOUND FOR REQUIRED LOCATION`);
-    //     console.log("catch");
-    // });
+}
+    catch (err) {
+        res.status(500).send(`${err}: MOVIE'S DATA NOT FOUND FOR REQUIRED LOCATION`);
+        console.log("catch");
+    };
     console.log("pass");
 
 }
